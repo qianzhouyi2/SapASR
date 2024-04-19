@@ -1,0 +1,6 @@
+torch
+torchaudio
+flashlight-text
+matplotlib
+pysoundfile
+KenLM

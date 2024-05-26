@@ -2,7 +2,7 @@ import torch
 import torchaudio
 import os
 
-bundle = torchaudio.pipelines.WAV2VEC2_ASR_BASE_10M
+bundle = torchaudio.pipelines.WAV2VEC2_ASR_LARGE_LV60K_960H
 
 def wer(actual_transcript,result):
     return torchaudio.functional.edit_distance(actual_transcript, result) / len(actual_transcript)

@@ -9,7 +9,7 @@ import time
 LM_WEIGHT = 3.23
 WORD_SCORE = -0.26
 files = download_pretrained_files("librispeech-4-gram")
-bundle = torchaudio.pipelines.WAV2VEC2_ASR_BASE_10M
+bundle = torchaudio.pipelines.WAV2VEC2_ASR_LARGE_LV60K_960H
 tokens = [label.lower() for label in bundle.get_labels()]
 
 beam_search_decoder = ctc_decoder(
@@ -106,9 +106,9 @@ def plot_alignments(waveform, emission, sample_rate):
         ax.grid(True, axis="y")
         ax.set_xlim(xlim)
 
-    _plot(axes[0], (0.3, 2.5))
-    _plot(axes[1], (2.5, 4.7))
-    _plot(axes[2], (4.7, 6.9))
+    _plot(axes[0], (1.0, 2.5))
+    _plot(axes[1], (2.5, 4.0))
+    _plot(axes[2], (4.0, 5.5))
     axes[2].set_xlabel("time (sec)")
     fig.tight_layout()
     plt.show()
@@ -119,19 +119,3 @@ def beamsearch_nbest(emission,n):
         transcript = " ".join(beam_search_result[0][i].words).strip()
         score = beam_search_result[0][i].score
         print(f"{transcript} (score: {score})")
-
-def print_decoded(decoder, emission, param, param_value):
-    start_time = time.monotonic()
-    result = decoder(emission)
-    decode_time = time.monotonic() - start_time
-    transcript = " ".join(result[0][0].words).lower().strip()
-    score = result[0][0].score
-    print(f"{param} {param_value:<3}: {transcript} (score: {score:.2f}; {decode_time:.4f} secs)")
-
-def kwarg_decoder(**kwargs):
-    return ctc_decoder(
-        lexicon=files.lexicon,
-        tokens=files.tokens,
-        lm=files.lm,
-        **kwargs
-    )

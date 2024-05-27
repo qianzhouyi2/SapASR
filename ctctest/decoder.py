@@ -46,10 +46,12 @@ greedy_decoder = GreedyCTCDecoder(tokens)
 
     
 def greedy_infer(emission,actual_transcript):
+    start_time = time.monotonic()
     greedy_result = greedy_decoder(emission[0])
+    decode_time = time.monotonic() - start_time
     greedy_transcript = " ".join(greedy_result)
     greedy_wer = wer(actual_transcript, greedy_result)
-
+    print(f"{decode_time:.4f} secs)")
     print(f"Transcript: {greedy_transcript}")
     print(f"WER: {greedy_wer}")
 
